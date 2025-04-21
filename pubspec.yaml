@@ -3,8 +3,8 @@ description: A Flutter widget that shows animated, tappable stacked cards.
 version: 0.1.2
             # semantic versioning: MAJOR.MINOR.PATCH
 
-homepage: https://github.com/Sunilnani/stacked_cards
-repository: https://github.com/Sunilnani/stacked_cards
+homepage: https://github.com/Sunilnani/stacked_card
+repository: https://github.com/Sunilnani/stacked_card
 license: MIT
 
 environment:
