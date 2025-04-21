@@ -18,16 +18,9 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Demo
 
-<!-- Static screenshot of the stacked cards widget -->
-![Stacked Cards Screenshot](assets/screenshot.jpeg)
+![Stacked Cards Screenshot](https://raw.githubusercontent.com/Sunilnani/stacked_card/main/assets/screenshot.jpeg)
 
-<!-- If you have a short GIF version: -->
-![Stacked Cards Demo GIF](assets/demo.gif)
+![Stacked Cards Demo GIF](https://raw.githubusercontent.com/Sunilnani/stacked_card/main/assets/demo.gif)
 
-<!-- If you prefer to link to the MP4: -->
-[▶️ Watch the demo video](assets/demo.mp4)
+[▶️ Watch the demo video](https://raw.githubusercontent.com/Sunilnani/stacked_card/main/assets/demo.mp4)
 
-<!-- Or, if you really want an embedded video (GitHub may render, pub.dev will strip it): -->
-<video src="assets/demo.mp4" controls width="600">
-  Your browser does not support the video tag.
-</video>
