@@ -1,13 +1,18 @@
 name: stacked_cards        # lowercase, underscores
 description: A Flutter widget that shows animated, tappable stacked cards.
 version: 0.1.0             # semantic versioning: MAJOR.MINOR.PATCH
-homepage: https://github.com/yourusername/stacked_cards
-repository: https://github.com/yourusername/stacked_cards
+
+homepage: https://github.com/Sunilnani/stacked_cards
+repository: https://github.com/Sunilnani/stacked_cards
+license: MIT
+
 environment:
   sdk: ">=2.18.0 <3.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -16,4 +21,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/demo.mp4
-
