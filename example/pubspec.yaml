@@ -1,0 +1,20 @@
+name: example
+description: Demonstrates flutter_stacked_cards
+publish_to: 'none' # prevents accidental publishing of example
+
+environment:
+  sdk: '>=2.18.0 <4.0.0'
+  flutter: '>=3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  stacked_cards:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
