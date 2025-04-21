@@ -1,12 +1,7 @@
-
----
-
-## 7. Create **CHANGELOG.md**
-
-**File:** `CHANGELOG.md`
-```markdown
-# Changelog
-
-## [0.1.0] – 2025‑04‑21
+## [0.1.1] – 2025‑04‑21
 ### Added
-- Initial version of `StackedCards` widget with animated stacking, pastel gradients, and scrollable expanded content.
+- Embedded screenshot and demo GIF in README
+- Declared screenshot, demo.gif, and demo.mp4 assets in pubspec.yaml
+
+### Fixed
+- Updated README image URLs to absolute raw.githubusercontent.com links
