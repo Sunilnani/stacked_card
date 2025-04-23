@@ -28,6 +28,8 @@ class ExampleApp extends StatelessWidget {
       ),
       CardItem(
         title: 'Workout Plans',
+        isButton: true,
+        buttonTitle: 'Get Started',
         body:
         'Customized workouts for all fitness levels. Stay motivated with progress tracking and tips.',
         icon: Icons.fitness_center,
@@ -57,18 +59,30 @@ class ExampleApp extends StatelessWidget {
 class CardItem {
   final String title;
   final String body;
+  final TextStyle? titleTextStyle;
+  final TextStyle? bodyTextStyle;
+  final String? buttonTitle;
+  final TextStyle? buttonTextStyle;
+  final ButtonStyle? buttonStyle;
   final IconData? icon;
 
   /// Provide **either** a gradient **or** a solid colour.
   final List<Color>? gradientColors;
   final Color? solidColor;
+  final bool? isButton;
 
   CardItem({
     required this.title,
     required this.body,
+    this.titleTextStyle,
+    this.bodyTextStyle,
+    this.buttonTitle,
+    this.buttonTextStyle,
+    this.buttonStyle,
     this.icon,
     this.gradientColors,
     this.solidColor,
+    this.isButton,
   }) : assert(
   (gradientColors != null && gradientColors.length >= 2) ||
       (solidColor != null),
@@ -87,9 +101,9 @@ class StackedCards extends StatefulWidget {
 }
 
 class _StackedCardsState extends State<StackedCards> {
-  static const double _collapsedHeight = 70;
+  static const double _collapsedHeight = 100;
   static const double _expandedHeight  = 240;
-  static const double _overlap         = 50;
+  static const double _overlap         = 70;
 
   late List<CardItem> _items;
   late CardItem _selected;
@@ -172,7 +186,7 @@ class _StackedCardsState extends State<StackedCards> {
                           Expanded(
                             child: Text(
                               item.title,
-                              style: const TextStyle(
+                              style: item.titleTextStyle ?? TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
@@ -187,16 +201,17 @@ class _StackedCardsState extends State<StackedCards> {
                         const SizedBox(height: 12),
                         Text(
                           item.body,
-                          style: const TextStyle(
+                          style: item.bodyTextStyle ?? TextStyle(
                             fontSize: 16,
                             color: Colors.black54,
                           ),
                         ),
                         const SizedBox(height: 16),
+                        item.isButton == true ?
                         Align(
                           alignment: Alignment.bottomRight,
                           child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
+                            style:item.buttonStyle ?? ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.black87,
                               elevation: 2,
@@ -205,9 +220,9 @@ class _StackedCardsState extends State<StackedCards> {
                               ),
                             ),
                             onPressed: () {},
-                            child: const Text('Learn More'),
+                            child:  Text(item.buttonTitle ?? 'Learn More',style:item.buttonTextStyle ?? TextStyle(color: Colors.black87,fontSize: 16, fontWeight: FontWeight.bold),),
                           ),
-                        ),
+                        ) : const SizedBox.shrink(),
                       ],
                     ],
                   ),
