@@ -4,7 +4,7 @@ import 'package:stacked_cards/stacked_cards.dart';
 void main() => runApp(const ExampleApp());
 
 class ExampleApp extends StatelessWidget {
-  const ExampleApp({Key? key}) : super(key: key);
+  const ExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,34 +14,29 @@ class ExampleApp extends StatelessWidget {
         body:
         'Discover hidden gems around the world with our exclusive travel guides and insider recommendations.',
         icon: Icons.flight_takeoff,
-        gradientColors: [
-          Colors.blue.shade200,
-          Colors.blue.shade400,
-        ],
+        //solidColor: Colors.red
+        // ← use a gradient
+        gradientColors: [Colors.blue.shade100, Colors.blue.shade400],
       ),
       CardItem(
         title: 'Healthy Recipes',
         body:
         'Wholesome and delicious recipes tailored for every taste. From smoothies to full-course meals!',
         icon: Icons.restaurant_menu,
-        gradientColors: [
-          Colors.green.shade200,
-          Colors.green.shade400,
-        ],
+        // ← use a solid colour instead
+        solidColor: Colors.green.shade200,
       ),
       CardItem(
         title: 'Workout Plans',
         body:
         'Customized workouts for all fitness levels. Stay motivated with progress tracking and tips.',
         icon: Icons.fitness_center,
-        gradientColors: [
-          Colors.orange.shade200,
-          Colors.deepOrange.shade400,
-        ],
+        gradientColors: [Colors.orange.shade200, Colors.deepOrange.shade600],
       ),
     ];
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Stacked Cards Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: Scaffold(
@@ -57,38 +52,44 @@ class ExampleApp extends StatelessWidget {
   }
 }
 
+/*――――――――――――――  MODEL  ――――――――――――*/
 
-
-/// A single card item with its own gradient colors.
 class CardItem {
   final String title;
   final String body;
-  final IconData icon;
-  final List<Color> gradientColors;
+  final IconData? icon;
+
+  /// Provide **either** a gradient **or** a solid colour.
+  final List<Color>? gradientColors;
+  final Color? solidColor;
 
   CardItem({
     required this.title,
     required this.body,
-    required this.icon,
-    required this.gradientColors,
-  });
+    this.icon,
+    this.gradientColors,
+    this.solidColor,
+  }) : assert(
+  (gradientColors != null && gradientColors.length >= 2) ||
+      (solidColor != null),
+  'You must supply either at least two gradient colours or one solid colour',
+  );
 }
 
-/// A stack of tappable cards that animate to the front and expand,
-/// preserving each card's unique gradient colors.
+/*――――――――――――――  WIDGET  ――――――――――――*/
+
 class StackedCards extends StatefulWidget {
-  /// The list of cards to display.
   final List<CardItem> items;
-  const StackedCards({Key? key, required this.items}) : super(key: key);
+  const StackedCards({super.key, required this.items});
 
   @override
-  _StackedCardsState createState() => _StackedCardsState();
+  State<StackedCards> createState() => _StackedCardsState();
 }
 
 class _StackedCardsState extends State<StackedCards> {
-  static const double _collapsedHeight = 70.0;
-  static const double _expandedHeight = 240.0;
-  static const double _overlap = 50.0;
+  static const double _collapsedHeight = 70;
+  static const double _expandedHeight  = 240;
+  static const double _overlap         = 50;
 
   late List<CardItem> _items;
   late CardItem _selected;
@@ -96,118 +97,130 @@ class _StackedCardsState extends State<StackedCards> {
   @override
   void initState() {
     super.initState();
-    // Clone the list so we can reorder
-    _items = List.from(widget.items);
+    _items    = List.of(widget.items);
     _selected = _items.last;
   }
 
   @override
   Widget build(BuildContext context) {
-    final totalHeight = _expandedHeight + (_items.length - 1) * _overlap;
+    final totalH = _expandedHeight + (_items.length - 1) * _overlap;
 
-    return Center(
-      child: SizedBox(
-        height: totalHeight,
-        width: double.infinity,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: _items.asMap().entries.map((entry) {
-            final index = entry.key;
-            final item = entry.value;
-            final isSelected = item == _selected;
-            final topOffset = index * _overlap;
-            final cardHeight = isSelected ? _expandedHeight : _collapsedHeight;
-            // Use each item's own gradient
-            final colors = item.gradientColors;
+    return SizedBox(
+      height: totalH,
+      width : double.infinity,
+      child : Stack(
+        clipBehavior: Clip.none,
+        children: _items.asMap().entries.map((entry) {
+          final idx       = entry.key;
+          final item      = entry.value;
+          final selected  = item == _selected;
+          final top       = idx * _overlap;
+          final cardH     = selected ? _expandedHeight : _collapsedHeight;
 
-            return AnimatedPositioned(
-              key: ValueKey(item.title),
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              top: topOffset,
-              left: 20,
-              right: 20,
-              height: cardHeight,
-              child: GestureDetector(
-                onTap: () => _onTap(item),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: colors,
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: ListView(
-                      physics: isSelected
-                          ? const AlwaysScrollableScrollPhysics()
-                          : const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(16),
-                      children: [
-                        Row(
-                          children: [
-                            Icon(item.icon, color: Colors.black87, size: 28),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                item.title,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
+          // Decide whether to paint a gradient or a solid colour
+          final BoxDecoration bg = (item.gradientColors != null)
+              ? BoxDecoration(
+            gradient: LinearGradient(
+              colors: item.gradientColors!,
+              begin : Alignment.topLeft,
+              end   : Alignment.bottomRight,
+            ),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6,
+                offset: Offset(0, 3),
+              ),
+            ],
+          )
+              : BoxDecoration(
+            color: item.solidColor,
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6,
+                offset: Offset(0, 3),
+              ),
+            ],
+          );
+
+          return AnimatedPositioned(
+            key     : ValueKey(item.title),
+            duration: const Duration(milliseconds: 300),
+            curve   : Curves.easeInOut,
+            top     : top,
+            left    : 20,
+            right   : 20,
+            height  : cardH,
+            child   : GestureDetector(
+              onTap: () => _bringToFront(item),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  decoration: bg,
+                  child: ListView(
+                    physics: selected
+                        ? const AlwaysScrollableScrollPhysics()
+                        : const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(16),
+                    children: [
+                      // header
+                      Row(
+                        children: [
+                          Icon(item.icon, color: Colors.black87, size: 28),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              item.title,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
                               ),
-                            ),
-                          ],
-                        ),
-                        if (isSelected) ...[
-                          const SizedBox(height: 12),
-                          Text(
-                            item.body,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black54,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor: colors.last,
-                                elevation: 2,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: const Text('Learn More'),
                             ),
                           ),
                         ],
+                      ),
+
+                      // details only when expanded
+                      if (selected) ...[
+                        const SizedBox(height: 12),
+                        Text(
+                          item.body,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black87,
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: const Text('Learn More'),
+                          ),
+                        ),
                       ],
-                    ),
+                    ],
                   ),
                 ),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
 
-  void _onTap(CardItem item) {
+  void _bringToFront(CardItem item) {
     setState(() {
       _items.remove(item);
       _items.add(item);

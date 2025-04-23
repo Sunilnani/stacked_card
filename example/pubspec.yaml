@@ -18,9 +18,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/screenshot.jpeg
-    - assets/demo.gif
-    - assets/demo.mp4
 
 
