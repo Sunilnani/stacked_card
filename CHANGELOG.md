@@ -1,4 +1,4 @@
-## [0.1.7] – 2025‑04‑21
+## [0.1.8] – 2025‑04‑21
 ### Added
 - Embedded screenshot and demo GIF in README
 - Declared screenshot, demo.gif, and demo.mp4 assets in pubspec.yaml
