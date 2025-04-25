@@ -1,5 +1,4 @@
 /*────────────────────────── main.dart ──────────────────────────*/
-import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const ExampleApp());
@@ -11,6 +10,8 @@ class ExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = [
       // ① No colour – auto pastel
+
+
       CardItem(
         title: const Text('Travel Tips'),
         body: const Text(
@@ -37,13 +38,13 @@ class ExampleApp extends StatelessWidget {
         isButton: true,
         buttonTitle: 'Get Started',
         buttonStyle: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.red),
-          foregroundColor: MaterialStateProperty.all(Colors.yellow),
-          textStyle: MaterialStateProperty.all(const TextStyle(
+          backgroundColor: WidgetStateProperty.all(Colors.red),
+          foregroundColor: WidgetStateProperty.all(Colors.yellow),
+          textStyle: WidgetStateProperty.all(const TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
           )),
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(65),
               side: const BorderSide(color: Colors.black),
@@ -72,7 +73,7 @@ class ExampleApp extends StatelessWidget {
 }
 
 /*──────────────── MODEL ─────────────────────────────*/
-
+/// Immutable data that describes a single card in [StackedCards].
 class CardItem {
   final Widget title;
   final Widget body;
@@ -101,6 +102,10 @@ class CardItem {
 
 /*──────────────── WIDGET ─────────────────────────────*/
 
+/// A vertically-stacked card deck where one card can be expanded at a time.
+///
+/// Build a list of [CardItem]s and pass them into [StackedCards.items].
+
 class StackedCards extends StatefulWidget {
   final List<CardItem> items;
 
@@ -118,7 +123,7 @@ class StackedCards extends StatefulWidget {
     this.overlap = 70,
     this.cardBorderRadius = 16,
   }) : assert(expandedHeight > collapsedHeight,
-  'expandedHeight must be > collapsedHeight');
+            'expandedHeight must be > collapsedHeight');
 
   @override
   State<StackedCards> createState() => _StackedCardsState();
@@ -149,9 +154,9 @@ class _StackedCardsState extends State<StackedCards> {
       child: Stack(
         clipBehavior: Clip.none,
         children: _items.asMap().entries.map((entry) {
-          final idx   = entry.key;
-          final item  = entry.value;
-          final top   = idx * _gap;
+          final idx = entry.key;
+          final item = entry.value;
+          final top = idx * _gap;
           final cardH = item == _selected ? _expanded : _collapsed;
 
           /*──────── background ────────*/
@@ -161,10 +166,10 @@ class _StackedCardsState extends State<StackedCards> {
           final bg = BoxDecoration(
             gradient: item.gradientColors != null
                 ? LinearGradient(
-              colors: item.gradientColors!,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            )
+                    colors: item.gradientColors!,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
                 : null,
             color: item.gradientColors == null
                 ? (item.solidColor ?? fallback)
@@ -208,61 +213,61 @@ class _StackedCardsState extends State<StackedCards> {
   /*───────── helpers ─────────*/
 
   Widget _buildCollapsedHeader(CardItem item) => Padding(
-    padding: const EdgeInsets.all(18),
-    // padding: const EdgeInsets.only(left: 18, right: 30, top: 20, bottom: 10),
-    child: DefaultTextStyle.merge(
-      style: const TextStyle(
-          fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
-      child: item.title,
-    ),
-  );
+        padding: const EdgeInsets.all(18),
+        // padding: const EdgeInsets.only(left: 18, right: 30, top: 20, bottom: 10),
+        child: DefaultTextStyle.merge(
+          style: const TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
+          child: item.title,
+        ),
+      );
 
   Widget _buildExpandedContent(CardItem item) => Stack(
-    children: [
-      Positioned.fill(
-        child: ListView(
-          padding: const EdgeInsets.all(18),
-          children: [
-            DefaultTextStyle.merge(
-              style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87),
-              child: item.title,
-            ),
-            const SizedBox(height: 12),
-            DefaultTextStyle.merge(
-              style: const TextStyle(fontSize: 16, color: Colors.black54),
-              child: item.body,
-            ),
-            const SizedBox(height: 60),
-          ],
-        ),
-      ),
-      if (item.isButton == true)
-        Positioned(
-          right: 16,
-          bottom: 16,
-          child: ElevatedButton(
-            style: item.buttonStyle ??
-                ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black87,
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+        children: [
+          Positioned.fill(
+            child: ListView(
+              padding: const EdgeInsets.all(18),
+              children: [
+                DefaultTextStyle.merge(
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87),
+                  child: item.title,
                 ),
-            onPressed: item.onTap,
-            child: Text(item.buttonTitle ?? 'Learn More'),
+                const SizedBox(height: 12),
+                DefaultTextStyle.merge(
+                  style: const TextStyle(fontSize: 16, color: Colors.black54),
+                  child: item.body,
+                ),
+                const SizedBox(height: 60),
+              ],
+            ),
           ),
-        ),
-    ],
-  );
+          if (item.isButton == true)
+            Positioned(
+              right: 16,
+              bottom: 16,
+              child: ElevatedButton(
+                style: item.buttonStyle ??
+                    ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black87,
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                onPressed: item.onTap,
+                child: Text(item.buttonTitle ?? 'Learn More'),
+              ),
+            ),
+        ],
+      );
 
   void _bringToFront(CardItem item) {
     setState(() {
@@ -272,5 +277,3 @@ class _StackedCardsState extends State<StackedCards> {
     });
   }
 }
-
-

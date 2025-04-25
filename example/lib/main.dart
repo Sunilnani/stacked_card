@@ -15,45 +15,47 @@ class _ExampleAppState extends State<ExampleApp> {
   Widget build(BuildContext context) {
     final items = [
       CardItem(
-        title: Text('Travel Tips'),
-        body:
-       Text( 'Discover hidden gems around the world with our exclusive travel guides and insider recommendations.'),
+        title: const Text('Travel Tips'),
+        body: const Text(
+            'Discover hidden gems around the world with our exclusive travel guides and insider recommendations.'),
         //solidColor: Colors.red
         // ← use a gradient
-       // gradientColors: [Colors.blue.shade100, Colors.blue.shade400],
+        // gradientColors: [Colors.blue.shade100, Colors.blue.shade400],
       ),
       CardItem(
-        title: Text('Health & Wellness'),
-        body:
-        Text('Explore our curated collection of health and wellness articles, tips, and resources to enhance your well-being.'),
+        title: const Text('Health & Wellness'),
+        body: const Text(
+            'Explore our curated collection of health and wellness articles, tips, and resources to enhance your well-being.'),
         // ← use a solid colour instead
-       // solidColor: Colors.green.shade200,
+        // solidColor: Colors.green.shade200,
       ),
       CardItem(
-        title: Text('Cooking Made Easy'),
+        title: const Text('Cooking Made Easy'),
 
         isButton: true,
         buttonTitle: 'Get Started',
         buttonStyle: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(Colors.white),
           foregroundColor: WidgetStateProperty.all(Colors.pink),
-          shape: WidgetStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(65.0),
-            side: const BorderSide(color: Colors.black),
-          ),),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(65.0),
+              side: const BorderSide(color: Colors.black),
+            ),
+          ),
           textStyle: WidgetStateProperty.all(const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           )),
         ),
-        body:
-        Text('Customized workouts for all fitness levels. Stay motivated with progress tracking and tips.'),
+        body: const Text(
+            'Customized workouts for all fitness levels. Stay motivated with progress tracking and tips.'),
         //gradientColors: [Colors.orange.shade200, Colors.deepOrange.shade600],
       ),
       CardItem(
-        title: Text('Health & Wellness'),
-        body:
-        Text('Explore our curated collection of health and wellness articles, tips, and resources to enhance your well-being.'),
+        title: const Text('Health & Wellness'),
+        body: const Text(
+            'Explore our curated collection of health and wellness articles, tips, and resources to enhance your well-being.'),
         // ← use a solid colour instead
         // solidColor: Colors.green.shade200,
       ),
@@ -68,14 +70,10 @@ class _ExampleAppState extends State<ExampleApp> {
         body: Center(
           child: SizedBox(
             height: 400,
-            child: StackedCards(
-                items: items
-            ),
+            child: StackedCards(items: items),
           ),
         ),
       ),
     );
   }
 }
-
-
